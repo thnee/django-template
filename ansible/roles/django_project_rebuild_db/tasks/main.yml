@@ -1,0 +1,25 @@
+
+- name: "Recreate schema"
+  django_manage:
+    command="dbtools_recreate_schema"
+    app_path="/opt/{{ django_project_name }}/"
+    virtualenv="/var/opt/{{ django_project_name }}/venv/"
+
+- name: "Make migrations"
+  django_manage:
+    command="makemigrations {{ item }}"
+    app_path="/opt/{{ django_project_name }}/"
+    virtualenv="/var/opt/{{ django_project_name }}/venv/"
+  with_items: "{{ django_project_migration_apps }}"
+
+- name: "Migrate database"
+  django_manage:
+    command="migrate"
+    app_path="/opt/{{ django_project_name }}/"
+    virtualenv="/var/opt/{{ django_project_name }}/venv/"
+
+- name: "Load data"
+  django_manage:
+    command="dbtools_load_data"
+    app_path="/opt/{{ django_project_name }}/"
+    virtualenv="/var/opt/{{ django_project_name }}/venv/"

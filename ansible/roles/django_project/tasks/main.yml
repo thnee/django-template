@@ -1,0 +1,20 @@
+
+- name: "Create user"
+  user:
+    name="{{ django_project_name }}"
+    state=present
+    shell="/usr/sbin/nologin"
+    createhome=no
+
+- name: "Install APT packages"
+  apt: state=present name="{{ item }}"
+  with_items: "{{ django_project_apt_packages }}"
+
+- name: "Install PIP packages"
+  pip:
+    name="{{ item.name }}"
+    version="{{ item.version }}"
+    virtualenv_command="/usr/bin/pyvenv"
+    virtualenv="/var/opt/{{ django_project_name }}/venv/"
+  with_items: "{{ django_project_pip_packages }}"
+  when: "(django_project_env in item.envs) or ('all' in item.envs)"

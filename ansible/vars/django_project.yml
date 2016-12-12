@@ -1,0 +1,40 @@
+---
+django_project_name: {{ project_name }}
+
+django_project_apt_packages:
+  - python3
+  - python3-dev
+  - python3-venv
+  - libpq-dev
+  - gcc
+  - git
+
+django_project_pip_packages:
+  - {
+    name: "django",
+    version: "1.10.4",
+    envs: ["all"],
+  }
+  - {
+    name: "psycopg2",
+    version: "2.6.2",
+    envs: ["all"],
+  }
+  - {
+    name: "factory_boy",
+    version: "2.7.0",
+    envs: ["dev", "stage"],
+  }
+  - {
+    name: "gunicorn",
+    version: "19.6.0",
+    envs: ["dev"],
+  }
+  - {
+    name: "dj-static",
+    version: "0.0.6",
+    envs: ["dev"],
+  }
+
+django_project_migration_apps:
+  - core

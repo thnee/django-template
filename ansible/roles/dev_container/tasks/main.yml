@@ -1,0 +1,15 @@
+
+- name: "Update APT"
+  raw: apt-get update
+
+- name: "Install Python"
+  raw: apt-get install -y python
+
+- name: "Copy dumb-init"
+  copy:
+    src=dumb-init_1.2.0_amd64.deb
+    dest=/tmp/dumb-init_1.2.0_amd64.deb
+    force=no
+
+- name: "Install dumb-init"
+  apt: state=present deb=/tmp/dumb-init_1.2.0_amd64.deb

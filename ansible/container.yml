@@ -1,0 +1,109 @@
+version: "1"
+services:
+
+  postgres:
+    image: postgres:9.5.4
+    ports:
+      - "5500:5432"
+    volumes:
+      - "$PWD/postgres_data/:/var/lib/postgresql/data/"
+    environment:
+      - "PGDATA=/var/lib/postgresql/data/pgdata/"
+      - "POSTGRES_USER={{ project_name }}"
+      - "POSTGRES_PASSWORD={{ project_name }}"
+      - "POSTGRES_DB={{ project_name }}"
+
+  system:
+    image: debian:jessie
+    links:
+      - "postgres"
+    volumes:
+      - "$PWD/{{ project_name }}/:/opt/{{ project_name }}/"
+    environment:
+      - "PYTHONUNBUFFERED=1"
+      - "DJANGO_SETTINGS_ENV=dev"
+      - "DJANGO_SETTINGS_APP=system"
+    user: "{{ project_name }}"
+    working_dir: "/opt/{{ project_name }}/"
+    command: [
+      "/usr/bin/dumb-init",
+      "bash", "-c", "echo 'ready'; sleep infinity;"
+    ]
+
+  admin_site:
+    image: debian:jessie
+    links:
+      - "postgres"
+    ports:
+      - "5501:8000"
+    volumes:
+      - "$PWD/{{ project_name }}/:/opt/{{ project_name }}/"
+    user: "{{ project_name }}"
+    working_dir: "/opt/{{ project_name }}/"
+    environment:
+      - "PYTHONUNBUFFERED=1"
+      - "DJANGO_SETTINGS_ENV=dev"
+      - "DJANGO_SETTINGS_APP=admin_site"
+    command: [
+      "/usr/bin/dumb-init",
+      "/var/opt/{{ project_name }}/venv/bin/python",
+      "/var/opt/{{ project_name }}/venv/bin/gunicorn",
+        "-w", "1",
+        "--access-logfile", "-",
+        "--timeout", "120",
+        "--reload",
+        "--bind", "0.0.0.0:8000",
+        "wsgi:application",
+    ]
+
+  backoffice:
+    image: debian:jessie
+    links:
+      - "postgres"
+    ports:
+      - "5502:8000"
+    volumes:
+      - "$PWD/{{ project_name }}/:/opt/{{ project_name }}/"
+    user: "{{ project_name }}"
+    working_dir: "/opt/{{ project_name }}/"
+    environment:
+      - "PYTHONUNBUFFERED=1"
+      - "DJANGO_SETTINGS_ENV=dev"
+      - "DJANGO_SETTINGS_APP=backoffice"
+    command: [
+      "/usr/bin/dumb-init",
+      "/var/opt/{{ project_name }}/venv/bin/python",
+      "/var/opt/{{ project_name }}/venv/bin/gunicorn",
+        "-w", "1",
+        "--access-logfile", "-",
+        "--timeout", "120",
+        "--reload",
+        "--bind", "0.0.0.0:8000",
+        "wsgi:application",
+    ]
+
+  frontoffice:
+    image: debian:jessie
+    links:
+      - "postgres"
+    ports:
+      - "5503:8000"
+    volumes:
+      - "$PWD/{{ project_name }}/:/opt/{{ project_name }}/"
+    user: "{{ project_name }}"
+    working_dir: "/opt/{{ project_name }}/"
+    environment:
+      - "PYTHONUNBUFFERED=1"
+      - "DJANGO_SETTINGS_ENV=dev"
+      - "DJANGO_SETTINGS_APP=frontoffice"
+    command: [
+      "/usr/bin/dumb-init",
+      "/var/opt/{{ project_name }}/venv/bin/python",
+      "/var/opt/{{ project_name }}/venv/bin/gunicorn",
+        "-w", "1",
+        "--access-logfile", "-",
+        "--timeout", "120",
+        "--reload",
+        "--bind", "0.0.0.0:8000",
+        "wsgi:application",
+    ]

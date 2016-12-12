@@ -1,0 +1,23 @@
+---
+- hosts: system, admin_site, backoffice, frontoffice
+  gather_facts: false
+  roles:
+    - dev_container
+
+- hosts: system, admin_site, backoffice, frontoffice
+  gather_facts: true
+  vars:
+    django_project_env: dev
+  vars_files:
+    - vars/django_project.yml
+  roles:
+    - django_project
+
+- hosts: system
+  gather_facts: false
+  vars:
+    django_project_env: dev
+  vars_files:
+    - vars/django_project.yml
+  roles:
+    - django_project_rebuild_db
