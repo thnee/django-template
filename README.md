@@ -130,3 +130,28 @@ use the following while the system container is running:
 ```
 $ docker exec ansible_system_1 /var/opt/myproject/venv/bin/python /opt/myproject/manage.py check
 ```
+
+
+## Known issues
+
+- Currently,
+this project setup uses Docker merely as a substitute for virtual machines,
+to have an isolated system during development.
+I haven't tested pushing and deploying the containers generated with this template.
+- Currently,
+ansible-container does prefix the names of generated images with the project name,
+however it does not prefix the names of generated container instances with the project name.
+So if this template is used for multiple projects on the same machine,
+there would be a conflict.
+For example: there would be a container named `ansible_postgres_1` in each project.
+This can be worked around by manually prefixing the service names
+in `container.yml` with the project name.
+But I wont do that in this template, rather I will wait for it to be fixed upstream.
+
+
+## Todo
+
+- Support for running tests, with pytest.
+- Support for deployment, with terraform.
+- Helper tasks, with pyinvoke.
+- Docker cleanup task.
