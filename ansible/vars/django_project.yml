@@ -22,7 +22,7 @@ django_project_pip_packages:
   }
   - {
     name: "factory_boy",
-    version: "2.7.0",
+    version: "2.8.1",
     envs: ["dev", "stage"],
   }
   - {
@@ -33,6 +33,16 @@ django_project_pip_packages:
   - {
     name: "dj-static",
     version: "0.0.6",
+    envs: ["dev"],
+  }
+  - {
+    name: "pytest",
+    version: "3.0.5",
+    envs: ["dev"],
+  }
+  - {
+    name: "pytest-django",
+    version: "3.1.2",
     envs: ["dev"],
   }
 

@@ -107,3 +107,20 @@ services:
         "--bind", "0.0.0.0:8000",
         "wsgi:application",
     ]
+
+  tests:
+    image: debian:jessie
+    links:
+      - "postgres"
+    volumes:
+      - "$PWD/{{ project_name }}/:/opt/{{ project_name }}/"
+    user: "{{ project_name }}"
+    working_dir: "/opt/{{ project_name }}/"
+    environment:
+      - "PYTHONUNBUFFERED=1"
+      - "DJANGO_SETTINGS_ENV=dev"
+    command: [
+      "/usr/bin/dumb-init",
+      "/var/opt/{{ project_name }}/venv/bin/python",
+      "/var/opt/{{ project_name }}/venv/bin/py.test",
+    ]

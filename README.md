@@ -67,17 +67,21 @@ $ pip install -r requirements.txt
 
 $ ansible-container build
 
-$ ansible-container run
+## run apps
+$ ansible-container run system admin_site frontoffice backoffice
+
+## run tests
+$ ansible-container run tests
 ```
 
 The following ports are exposed:
 
-| App | Port | Protocol |
+| Service | Port | Protocol |
 | --- | --- | --- |
-| PostgreSQL | 5500 | psql |
-| Admin | 5501 | HTTP / HTML |
-| Backoffice | 5502 | HTTP / API |
-| Frontoffice | 5503 | HTTP / API |
+| postgres | 5500 | psql |
+| admin_site | 5501 | HTTP / HTML |
+| backoffice | 5502 | HTTP / API |
+| frontoffice | 5503 | HTTP / API |
 
 Navigate a browser to http://127.0.0.1:5501/
 and login with `admin@example.com` / `password`.
@@ -125,7 +129,7 @@ Since the code is mounted as a volume and gunicorn is being run with `--reload`,
 code changes are detected and loaded ASAP while running.
 
 To run a management command,
-use the following while the system container is running:
+use the following while the `system` service is running:
 
 ```
 $ docker exec ansible_system_1 /var/opt/myproject/venv/bin/python /opt/myproject/manage.py check
@@ -151,7 +155,7 @@ But I wont do that in this template, rather I will wait for it to be fixed upstr
 
 ## Todo
 
-- Support for running tests, with pytest.
+- Add django rest framework.
 - Support for deployment, with terraform.
 - Helper tasks, with pyinvoke.
 - Docker cleanup task.

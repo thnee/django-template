@@ -1,10 +1,10 @@
 ---
-- hosts: system, admin_site, backoffice, frontoffice
+- hosts: system, admin_site, backoffice, frontoffice, tests
   gather_facts: false
   roles:
     - dev_container
 
-- hosts: system, admin_site, backoffice, frontoffice
+- hosts: system, admin_site, backoffice, frontoffice, tests
   gather_facts: true
   vars:
     django_project_env: dev
