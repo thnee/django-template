@@ -155,7 +155,6 @@ But I wont do that in this template, rather I will wait for it to be fixed upstr
 
 ## Todo
 
-- Add django rest framework.
 - Support for deployment, with terraform.
 - Helper tasks, with pyinvoke.
 - Docker cleanup task.

@@ -21,6 +21,11 @@ django_project_pip_packages:
     envs: ["all"],
   }
   - {
+    name: "djangorestframework",
+    version: "3.5.3",
+    envs: ["all"],
+  }
+  - {
     name: "factory_boy",
     version: "2.8.1",
     envs: ["dev", "stage"],

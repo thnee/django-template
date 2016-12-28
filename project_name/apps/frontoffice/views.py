@@ -1,6 +1,11 @@
 
-from django.http import HttpResponse
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 
-def test(request):
-    return HttpResponse('frontoffice test')
+class IndexView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, format=None):
+        return Response({'content': 'frontoffice_index'})
